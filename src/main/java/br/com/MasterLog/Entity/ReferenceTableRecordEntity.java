@@ -12,7 +12,11 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 
 @Entity
-@Table( name = "REF_TABLE_RECORD", uniqueConstraints = @UniqueConstraint(columnNames = {"id","NameTable"}))
+@Table(name = "REF_TABLE_RECORD", 
+uniqueConstraints = {
+    @UniqueConstraint(columnNames = "id"),
+    @UniqueConstraint(columnNames = "NameTable")
+})
 @Data
 public class ReferenceTableRecordEntity implements Serializable {
 
