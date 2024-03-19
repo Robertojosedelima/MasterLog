@@ -19,13 +19,12 @@ public class ReferenceTableService {
 
 	@PersistenceContext
 	private EntityManager entityManager;
-	
+
 	@Autowired
 	ReferenceTableRepository referenceTableRepository;
 
 	@Autowired
 	ReferenceTableEntity referenceTableEntity;
-
 
 	public ResponseEntity<List<TableRecord>> findAll() {
 		// stores a list of ReferenceTableEntity
@@ -34,6 +33,12 @@ public class ReferenceTableService {
 		List<TableRecord> tableRecord = referenceTableEntity.toReferenceTableEntity(newReferenceTableEntity);
 
 		return ResponseEntity.ok(tableRecord);
+
+	}
+
+	public ReferenceTableEntity findById(String OwnerTable, String NameTable) {
+		return referenceTableRepository.findByOwnerAndTableName(OwnerTable, NameTable);
+		
 
 	}
 
@@ -51,19 +56,19 @@ public class ReferenceTableService {
 			newReferenceTableEntity.setId(rownum.id());
 			newReferenceTableEntity.setOwnerTable(rownum.Owner());
 			newReferenceTableEntity.setNameTable(rownum.tableName());
-		    deleteTriggerOracleBD(rownum.Owner(), rownum.tableName());
+			deleteTriggerOracleBD(rownum.Owner(), rownum.tableName());
 			referenceTableRepository.deleteById(newReferenceTableEntity.getId());
 		}
 
 		return ResponseEntity.ok().body("Successfully deleted triggers in tables select!");
 
 	}
-	
+
 	private void deleteTriggerOracleBD(String Owner, String tableName) {
 		String delTriggerSql = "DROP TRIGGER " + Owner + ".trg_audit_" + tableName.toLowerCase() + " ";
-		
+
 		Query query = entityManager.createNativeQuery(delTriggerSql);
 		query.executeUpdate();
-		
+
 	}
 }

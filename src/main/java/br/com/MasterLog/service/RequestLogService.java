@@ -21,20 +21,23 @@ public class RequestLogService {
 	private EntityManager entityManager;
 
 	@Autowired
-	ReferenceTableService referenceTableRecordService;
-	
+	ReferenceTableService referenceTableService;
 
 	@Transactional
 	public ResponseEntity<String> requestAddService(List<TableRecord> tableRecord) {
 
 		for (TableRecord rownum : tableRecord) {
 			createTriggerOracleBD(rownum.Owner(), rownum.tableName());
-			
+
 			ReferenceTableEntity referenceTableEntity = new ReferenceTableEntity();
 			referenceTableEntity.setOwnerTable(rownum.Owner());
 			referenceTableEntity.setNameTable(rownum.tableName());
-			
-			referenceTableRecordService.addReferenceTable(referenceTableEntity); //precisa verificar se registro já existe e se sim pular loop para proxima iteração 
+			if (referenceTableService.findById(referenceTableEntity.getOwnerTable(),
+					referenceTableEntity.getNameTable()) != null) {
+
+				continue;
+			}
+			referenceTableService.addReferenceTable(referenceTableEntity); 
 		}
 
 		return ResponseEntity.status(HttpStatus.CREATED).body("Successfully created triggers!");
@@ -62,7 +65,5 @@ public class RequestLogService {
 		query.executeUpdate();
 
 	}
-	
-
 
 }
