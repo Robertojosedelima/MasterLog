@@ -7,9 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import br.com.MasterLog.record.TableRecord;
-import br.com.MasterLog.Entity.ReferenceTableRecordEntity;
+import br.com.MasterLog.Entity.ReferenceTableEntity;
 import br.com.MasterLog.configuration.Parameters;
+import br.com.MasterLog.record.TableRecord;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -21,7 +21,7 @@ public class RequestLogService {
 	private EntityManager entityManager;
 
 	@Autowired
-	ReferenceTableRecordService referenceTableRecordService;
+	ReferenceTableService referenceTableRecordService;
 	
 
 	@Transactional
@@ -30,11 +30,11 @@ public class RequestLogService {
 		for (TableRecord rownum : tableRecord) {
 			createTriggerOracleBD(rownum.Owner(), rownum.tableName());
 			
-			ReferenceTableRecordEntity referenceTableRecordEntity = new ReferenceTableRecordEntity();
-			referenceTableRecordEntity.setOwnerTable(rownum.Owner());
-			referenceTableRecordEntity.setNameTable(rownum.tableName());
+			ReferenceTableEntity referenceTableEntity = new ReferenceTableEntity();
+			referenceTableEntity.setOwnerTable(rownum.Owner());
+			referenceTableEntity.setNameTable(rownum.tableName());
 			
-			referenceTableRecordService.addReferenceTable(referenceTableRecordEntity);
+			referenceTableRecordService.addReferenceTable(referenceTableEntity); //precisa verificar se registro já existe e se sim pular loop para proxima iteração 
 		}
 
 		return ResponseEntity.status(HttpStatus.CREATED).body("Successfully created triggers!");
@@ -62,5 +62,7 @@ public class RequestLogService {
 		query.executeUpdate();
 
 	}
+	
+
 
 }

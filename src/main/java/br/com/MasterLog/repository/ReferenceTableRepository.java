@@ -2,9 +2,9 @@ package br.com.MasterLog.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import br.com.MasterLog.Entity.ReferenceTableRecordEntity;
+import br.com.MasterLog.Entity.ReferenceTableEntity;
 
 @Repository
-public interface ReferenceTableRecordRepository extends JpaRepository<ReferenceTableRecordEntity, Long>{
+public interface ReferenceTableRepository extends JpaRepository<ReferenceTableEntity, Long>{
 
 }
