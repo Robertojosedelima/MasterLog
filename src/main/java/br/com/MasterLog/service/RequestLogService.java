@@ -48,15 +48,15 @@ public class RequestLogService {
 
 		String triggerSql = "CREATE OR REPLACE TRIGGER " + Owner + ".trg_audit_" + tableName.toLowerCase() + " "
 				+ "BEFORE INSERT OR UPDATE OR DELETE ON " + Owner + "." + tableName + " " + "FOR EACH ROW " + "BEGIN "
-				+ "    IF inserting THEN " + "      INSERT INTO " + Parameters.OWNER_LOG + "." + Parameters.TABLE_LOG
+				+ "    IF inserting THEN " + "      INSERT INTO " + Parameters.getOwnerLog() + "." + Parameters.getTableLog()
 				+ "(EVENT, DATE_TIME, ROUTE, USERNAME, OSUSER, MACHINE, INFO, TABLE_OWNER) "
 				+ "      VALUES ('INSERT', SYSTIMESTAMP, DBMS_UTILITY.FORMAT_CALL_STACK, sys_context('USERENV','OS_USER'), sys_context('USERENV','HOST'), sys_context('USERENV','MODULE'), sys_context('USERENV','CLIENT_INFO'), "
 				+ "'" + Owner + "." + tableName + "'" + "); " + "    ELSIF updating THEN " + "      INSERT INTO "
-				+ Parameters.OWNER_LOG + "." + Parameters.TABLE_LOG
+				+ Parameters.getOwnerLog() + "." + Parameters.getTableLog()
 				+ "(EVENT, DATE_TIME, ROUTE, USERNAME, OSUSER, MACHINE, INFO, TABLE_OWNER) "
 				+ "      VALUES ('UPDATE', SYSTIMESTAMP, DBMS_UTILITY.FORMAT_CALL_STACK, sys_context('USERENV','OS_USER'), sys_context('USERENV','HOST'), sys_context('USERENV','MODULE'), sys_context('USERENV','CLIENT_INFO'), "
 				+ "'" + Owner + "." + tableName + "'" + "); " + "    ELSIF deleting THEN " + "      INSERT INTO "
-				+ Parameters.OWNER_LOG + "." + Parameters.TABLE_LOG
+				+ Parameters.getOwnerLog() + "." + Parameters.getTableLog()
 				+ "(EVENT, DATE_TIME, ROUTE, USERNAME, OSUSER, MACHINE, INFO, TABLE_OWNER) "
 				+ "      VALUES ('DELETE', SYSTIMESTAMP, DBMS_UTILITY.FORMAT_CALL_STACK, sys_context('USERENV','OS_USER'), sys_context('USERENV','HOST'), sys_context('USERENV','MODULE'), sys_context('USERENV','CLIENT_INFO'), "
 				+ "'" + Owner + "." + tableName + "'" + "); " + "    END IF; " + "END;";
