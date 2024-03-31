@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import br.com.MasterLog.Entity.LogMasterLogEntity;
+import br.com.MasterLog.entity.LogMasterLogEntity;
 import br.com.MasterLog.repository.LogMasterLogRepository;
 
 @Service

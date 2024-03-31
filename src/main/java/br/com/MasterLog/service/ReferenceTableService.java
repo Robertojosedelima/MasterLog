@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import br.com.MasterLog.Entity.ReferenceTableEntity;
+import br.com.MasterLog.entity.ReferenceTableEntity;
 import br.com.MasterLog.record.TableRecord;
 import br.com.MasterLog.repository.ReferenceTableRepository;
 import jakarta.persistence.EntityManager;

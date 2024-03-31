@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import br.com.MasterLog.Entity.ReferenceTableEntity;
 import br.com.MasterLog.configuration.Parameters;
+import br.com.MasterLog.entity.ReferenceTableEntity;
 import br.com.MasterLog.record.TableRecord;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

@@ -1,4 +1,4 @@
-package br.com.MasterLog.Entity;
+package br.com.MasterLog.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
