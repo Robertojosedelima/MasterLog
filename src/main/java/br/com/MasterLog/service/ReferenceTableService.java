@@ -6,25 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import br.com.MasterLog.database.TriggerLog;
 import br.com.MasterLog.entity.ReferenceTableEntity;
 import br.com.MasterLog.record.TableRecord;
 import br.com.MasterLog.repository.ReferenceTableRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 
 @Service
 public class ReferenceTableService {
 
-	@PersistenceContext
-	private EntityManager entityManager;
-
 	@Autowired
 	ReferenceTableRepository referenceTableRepository;
-
 	@Autowired
 	ReferenceTableEntity referenceTableEntity;
+	@Autowired
+	TriggerLog triggerLog;
 
 	public ResponseEntity<List<TableRecord>> findAll() {
 		// stores a list of ReferenceTableEntity
@@ -38,7 +34,6 @@ public class ReferenceTableService {
 
 	public ReferenceTableEntity findById(String OwnerTable, String NameTable) {
 		return referenceTableRepository.findByOwnerAndTableName(OwnerTable, NameTable);
-		
 
 	}
 
@@ -56,7 +51,7 @@ public class ReferenceTableService {
 			newReferenceTableEntity.setId(rownum.id());
 			newReferenceTableEntity.setOwnerTable(rownum.Owner());
 			newReferenceTableEntity.setNameTable(rownum.tableName());
-			deleteTriggerOracleBD(rownum.Owner(), rownum.tableName());
+			triggerLog.deleteTriggerOracleBD(rownum.Owner(), rownum.tableName());
 			referenceTableRepository.deleteById(newReferenceTableEntity.getId());
 		}
 
@@ -64,11 +59,4 @@ public class ReferenceTableService {
 
 	}
 
-	private void deleteTriggerOracleBD(String Owner, String tableName) {
-		String delTriggerSql = "DROP TRIGGER " + Owner + ".trg_audit_" + tableName.toLowerCase() + " ";
-
-		Query query = entityManager.createNativeQuery(delTriggerSql);
-		query.executeUpdate();
-
-	}
 }
